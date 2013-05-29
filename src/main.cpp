@@ -1,11 +1,12 @@
-#include <fstream>
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "main.hpp"
+#include <fstream>
 
 int main()
 {
 	SDL_Renderer *renderer = NULL;
+	SDL_Event ev;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
 		fprintf(stderr, "SDL errored with message: \"%s\"\n", SDL_GetError());
@@ -28,19 +29,33 @@ int main()
 
 	SDL_Texture *background = LoadImage("background.png", &renderer);
 
-	SDL_RenderClear(renderer);
-
 	int backgroundImgWidth, backgroundImgHeight;
 	SDL_QueryTexture(background, NULL, NULL, &backgroundImgWidth, \
-			&backgroundImgHeight);
+											&backgroundImgHeight);
 
-	for (int x = 0; x < 10; x++)
-		for (int y = 0; y < 10; y++)
-			ApplySurface(x*backgroundImgWidth, y*backgroundImgHeight, \
-					background, renderer);
+	double x = 0, y = 0;
+	bool done = false;
+	while (!done)
+	{
+		while (SDL_PollEvent(&ev)) {
+			switch (ev.type)
+			{
+				case SDL_QUIT:
+				case SDL_KEYDOWN:
+				case SDL_MOUSEBUTTONDOWN:
+					done = true;
+					break;
+			}
+		}
+		SDL_RenderClear(renderer);
 
-	SDL_RenderPresent(renderer);
-	SDL_Delay(4000);
+		x = x+0.01;
+		y = y+0.01;
+		ApplySurface(x*backgroundImgWidth, y*backgroundImgHeight, \
+						background, renderer);
+
+		SDL_RenderPresent(renderer);
+	}
 
 	SDL_DestroyTexture(background);
 	SDL_DestroyRenderer(renderer);
