@@ -1,53 +1,70 @@
 #include <fstream>
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+#include "main.hpp"
 
 int main()
 {
-	printf("Sup world\n");
+	SDL_Renderer *renderer = NULL;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
-		printf("SDL errored with message: \"%s\"", SDL_GetError());
+		fprintf(stderr, "SDL errored with message: \"%s\"\n", SDL_GetError());
 		return 1;
 	}
-
-	SDL_Window *win = nullptr;
-	win = SDL_CreateWindow("Hello World!", 100, 100, 640, 480, \
-											SDL_WINDOW_SHOWN);
-	if (win == nullptr) {
-		printf("Couldn't open a window: %s", SDL_GetError());
-		return 1;
+	SDL_Window *window = SDL_CreateWindow("Hello World!\n", \
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480,\
+			SDL_WINDOW_SHOWN);
+	if (window == NULL) {
+		fprintf(stderr, "Couldn't open a window: %s\n", SDL_GetError());
+		return 2;
 	}
 
-	SDL_Renderer *ren = nullptr;
-	ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | \
-										SDL_RENDERER_PRESENTVSYNC);
-	if (ren == nullptr) {
-		printf("Couldn't initialize a renderer: %s", SDL_GetError());
-		return 1;
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | \
+			SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == NULL) {
+		fprintf(stderr, "Couldn't initialize a renderer: %s\n", SDL_GetError());
+		return 3;
 	}
 
-	SDL_Surface *bmp = nullptr;
-	bmp = SDL_LoadBMP("sprite.bmp");
-	if (bmp == nullptr){
-		printf("Bad image: %s", SDL_GetError());
-		return 1;
-	}
+	SDL_Texture *background = LoadImage("background.png", &renderer);
 
-	SDL_Texture *tex = nullptr;
-	tex = SDL_CreateTextureFromSurface(ren, bmp);
-	SDL_FreeSurface(bmp);
+	SDL_RenderClear(renderer);
 
-	SDL_RenderClear(ren);
-	SDL_RenderCopy(ren, tex, NULL, NULL);
-	SDL_RenderPresent(ren);
+	int backgroundImgWidth, backgroundImgHeight;
+	SDL_QueryTexture(background, NULL, NULL, &backgroundImgWidth, \
+			&backgroundImgHeight);
 
-	SDL_Delay(5000);
+	for (int x = 0; x < 10; x++)
+		for (int y = 0; y < 10; y++)
+			ApplySurface(x*backgroundImgWidth, y*backgroundImgHeight, \
+					background, renderer);
 
-	SDL_DestroyTexture(tex);
-	SDL_DestroyRenderer(ren);
-	SDL_DestroyWindow(win);
+	SDL_RenderPresent(renderer);
+	SDL_Delay(4000);
+
+	SDL_DestroyTexture(background);
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
 
 	SDL_Quit();
 
 	return 0;
+}
+
+SDL_Texture* LoadImage(const char* imagePath, SDL_Renderer **rend)
+{
+	SDL_Texture* tex = IMG_LoadTexture(*rend, imagePath);
+	if (tex == NULL)
+		fprintf(stderr, "Failed to load image \"%s\": %s\n", imagePath, \
+					IMG_GetError());
+
+	return tex;
+}
+
+void ApplySurface(int x, int y, SDL_Texture *tex, SDL_Renderer *rend)
+{
+	SDL_Rect pos = { x, y };
+
+	SDL_QueryTexture(tex, NULL, NULL, &pos.w, &pos.h);
+	SDL_RenderCopy(rend, tex, NULL, &pos);
 }
