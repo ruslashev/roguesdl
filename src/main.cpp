@@ -1,5 +1,6 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
 #include "main.hpp"
 #include <fstream>
 
@@ -12,6 +13,11 @@ int main()
 		fprintf(stderr, "SDL errored with message: \"%s\"\n", SDL_GetError());
 		return 1;
 	}
+	if (TTF_Init() == -1) {
+		fprintf(stderr, "Failed to Initialize SDL_ttf: \"%s\"\n", TTF_GetError());
+		return 1;
+	}
+
 	SDL_Window *window = SDL_CreateWindow("Hello World!\n", \
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480,\
 			SDL_WINDOW_SHOWN);
@@ -24,7 +30,7 @@ int main()
 			SDL_RENDERER_PRESENTVSYNC);
 	if (renderer == NULL) {
 		fprintf(stderr, "Couldn't initialize a renderer: %s\n", SDL_GetError());
-		return 3;
+		return 2;
 	}
 
 	SDL_Texture *background = LoadImage("background.png", &renderer);
@@ -33,7 +39,17 @@ int main()
 	SDL_QueryTexture(background, NULL, NULL, &backgroundImgWidth, \
 											&backgroundImgHeight);
 
-	double x = 0, y = 0;
+	TTF_Font *font = TTF_OpenFont("SourceCodePro-Regular.otf", 13);
+	if (font == NULL) {
+		fprintf(stderr, "Failed to load font: %s\n", TTF_GetError());
+		return 3;
+	}
+	TTF_SetFontHinting(font, TTF_HINTING_LIGHT);
+	SDL_Surface *fontSurf = TTF_RenderText_Shaded(font, "beep boop woof", {255, 255, 255}, {0, 0, 0});
+	SDL_Texture *fontText = SDL_CreateTextureFromSurface(renderer, fontSurf);
+	SDL_FreeSurface(fontSurf);
+	TTF_CloseFont(font);
+
 	bool done = false;
 	while (!done)
 	{
@@ -47,17 +63,15 @@ int main()
 					break;
 			}
 		}
-		SDL_RenderClear(renderer);
+		// SDL_RenderClear(renderer);
 
-		x = x+0.01;
-		y = y+0.01;
-		ApplySurface(x*backgroundImgWidth, y*backgroundImgHeight, \
-						background, renderer);
+		ApplySurface(100, 200, fontText, renderer);
 
 		SDL_RenderPresent(renderer);
 	}
 
 	SDL_DestroyTexture(background);
+	SDL_DestroyTexture(fontText);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 
@@ -69,6 +83,7 @@ int main()
 SDL_Texture* LoadImage(const char* imagePath, SDL_Renderer **rend)
 {
 	SDL_Texture* tex = IMG_LoadTexture(*rend, imagePath);
+	// TODO
 	if (tex == NULL)
 		fprintf(stderr, "Failed to load image \"%s\": %s\n", imagePath, \
 					IMG_GetError());
