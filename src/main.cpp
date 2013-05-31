@@ -7,7 +7,7 @@
 
 int main()
 {
-	Terminal term("Hai", 80, 30, "woof.ttf", 100);
+	Terminal term("Hai", 80, 30, "SourceCodePro-Regular.otf", 13);
 
 	// SDL_Texture *background = LoadImage("background.png", &renderer);
 
