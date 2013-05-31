@@ -11,10 +11,9 @@
 
 struct Cell
 {
-	SDL_Color color;
 	unsigned char ch;
-
-	bool bold;
+	// SDL_Color color;
+	// bool bold;
 };
 
 class Terminal
@@ -32,8 +31,6 @@ public:
 	Terminal(const char* title, int columns, int rows, const char* fontPath, \
 			int fontSize);
 	~Terminal();
-
-	void loadFont(const char* fontPath, int fontSize);
 
 	void draw();
 	void quit();

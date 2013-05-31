@@ -9,12 +9,6 @@ int main()
 {
 	Terminal term("Hai", 80, 30, "SourceCodePro-Regular.otf", 13);
 
-	// SDL_Texture *background = LoadImage("background.png", &renderer);
-
-	// int backgroundImgWidth, backgroundImgHeight;
-	// SDL_QueryTexture(background, NULL, NULL, &backgroundImgWidth, \
-	// 										&backgroundImgHeight);
-
 	bool done = false;
 	while (!done)
 	{
@@ -34,8 +28,6 @@ int main()
 
 		SDL_RenderPresent(term.renderer);
 	}
-
-	// SDL_DestroyTexture(background);
 
 	return 0;
 }
