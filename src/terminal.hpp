@@ -22,7 +22,7 @@ public:
 		std::string fontPath, int fontSize);
 	~Terminal();
 
-	bool loadFont(std::string fontPath, int fontSize);
+	void loadFont(std::string fontPath, int fontSize);
 
 	void draw();
 	void quit();
