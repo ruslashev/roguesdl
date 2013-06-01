@@ -11,9 +11,12 @@ void fatal(int code, const char* format, ...)
 	exit(code);
 }
 
-Terminal::Terminal(const char* title, int columns, int rows, \
+Terminal::Terminal(const char* title, int cols, int rws, \
 		const char* fontPath, int fontSize)
 {
+	columns = cols;
+	rows = rws;
+
 	{
 		if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
 			fatal(1, "Failed to Initialize SDL: %s\n", SDL_GetError());
@@ -40,11 +43,6 @@ Terminal::Terminal(const char* title, int columns, int rows, \
 	}
 
 	TTF_SetFontHinting(font, TTF_HINTING_LIGHT);
-	SDL_Surface *fontSurf = TTF_RenderText_Shaded(font, "beep boop woof", \
-											{255, 255, 255}, {30, 30, 30});
-	fontText = SDL_CreateTextureFromSurface(renderer, fontSurf);
-	SDL_FreeSurface(fontSurf);
-	TTF_CloseFont(font);
 
 	screen.resize(columns);
 	for (int x = 0; x < columns; x++)
@@ -54,13 +52,46 @@ Terminal::Terminal(const char* title, int columns, int rows, \
 		for (int y = 0; y < rows; y++)
 			screen[x][y] = {'0'};
 
+	RebuildSurface();
+}
+
+void Terminal::RebuildSurface()
+{
+	// TODO optimizing n stuff
+	std::string colStr;
+	for (int x = 0; x < columns; x++)
+	{
+		colStr = "";
+		for (char &c : screen[x])
+			colStr.push_back(c);
+		printf("%s\n", colStr.c_str());
+
+		SDL_Surface *fontSurf = TTF_RenderText_Shaded(font, colStr.c_str(), \
+				{255, 255, 255}, {30, 30, 30});
+		SDL_Rect offsetRect = { 0, fontSurf->h * x, fontSurf->w, fontSurf->h };;
+		screenTexture = SDL_CreateTextureFromSurface(renderer, fontSurf);
+		SDL_FreeSurface(fontSurf);
+		SDL_RenderCopy(renderer, screenTexture, NULL, &offsetRect);
+		// TODO &pos -> NULL
+	}
+
+	// screenTexture = SDL_CreateTextureFromSurface(renderer, screenSurf);
+}
+
+void Terminal::Draw()
+{
+	// SDL_RenderClear(renderer);
+
+
+	SDL_RenderPresent(renderer);
 }
 
 Terminal::~Terminal()
 {
-	SDL_DestroyTexture(fontText);
+	SDL_DestroyTexture(screenTexture);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	TTF_CloseFont(font);
 
 	TTF_Quit();
 

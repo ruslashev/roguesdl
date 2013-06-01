@@ -7,7 +7,7 @@
 
 int main()
 {
-	Terminal term("Hai", 80, 30, "SourceCodePro-Regular.otf", 13);
+	Terminal term("Hai", 10, 5, "SourceCodePro-Regular.otf", 13);
 
 	bool done = false;
 	while (!done)
@@ -22,11 +22,7 @@ int main()
 					break;
 			}
 		}
-		// SDL_RenderClear(renderer);
-
-		ApplySurface(100, 200, term.fontText, term.renderer);
-
-		SDL_RenderPresent(term.renderer);
+		term.Draw();
 	}
 
 	return 0;
@@ -43,10 +39,3 @@ SDL_Texture* LoadImage(const char* imagePath, SDL_Renderer **rend)
 	return tex;
 }
 
-void ApplySurface(int x, int y, SDL_Texture *tex, SDL_Renderer *rend)
-{
-	SDL_Rect pos = { x, y };
-
-	SDL_QueryTexture(tex, NULL, NULL, &pos.w, &pos.h);
-	SDL_RenderCopy(rend, tex, NULL, &pos);
-}
