@@ -7,7 +7,7 @@
 
 int main()
 {
-	Terminal term("Hai", 10, 5, "SourceCodePro-Regular.otf", 13);
+	Terminal term("Hai", 80, 25, "SourceCodePro-Regular.otf", 13);
 
 	bool done = false;
 	while (!done)
