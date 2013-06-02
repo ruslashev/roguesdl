@@ -54,7 +54,7 @@ Terminal::Terminal(const char* title, int cols, int rws, \
 
 	for (int y = 0; y < rows; y++)
 		for (int x = 0; x < columns; x++)
-			screen[y][x] = 'a';
+			screen[y][x] = ' ';
 
 	RebuildSurface();
 }
@@ -71,7 +71,7 @@ void Terminal::RebuildSurface()
 			rowStr.push_back(c);
 
 		fontSurf = TTF_RenderText_Shaded(font, rowStr.c_str(), \
-				{255, 255, 255}, {30, 30, 30});
+				{255, 255, 255}, {20, 20, 20});
 		SDL_Rect offsetRect = { 0, fontSurf->h*y, fontSurf->w, fontSurf->h };
 		screenTexture = SDL_CreateTextureFromSurface(renderer, fontSurf);
 		SDL_RenderCopy(renderer, screenTexture, NULL, &offsetRect);
@@ -85,6 +85,39 @@ void Terminal::Draw()
 
 
 	SDL_RenderPresent(renderer);
+}
+
+void Terminal::move(int y, int x)
+{
+	cursY = y;
+	cursX = x;
+}
+
+void Terminal::addch(char c)
+{
+	screen[cursY][cursX] = c;
+}
+
+void Terminal::addstr(std::string str)
+{
+	for (int x = cursX; x < cursX+str.length(); x++)
+	{
+		if (x > columns)
+			break;
+		screen[cursY][x] = str[x-cursX];
+	}
+}
+
+void Terminal::mvaddch(int y, int x, char c)
+{
+	move(y, x);
+	addch(c);
+}
+
+void Terminal::mvaddstr(int y, int x, std::string str)
+{
+	move(y, x);
+	addstr(str);
 }
 
 Terminal::~Terminal()

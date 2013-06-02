@@ -22,6 +22,7 @@ class Terminal
 private:
 	TTF_Font *font;
 
+	unsigned short cursX = 0, cursY = 0;
 	std::vector<std::vector<char>> screen;
 public:
 	SDL_Window *window;
@@ -37,6 +38,12 @@ public:
 
 	void RebuildSurface();
 	void Draw();
+
+	void move(int y, int x);
+	void addch(char c);
+	void addstr(std::string str);
+	void mvaddch(int y, int x, char c);
+	void mvaddstr(int y, int x, std::string str);
 };
 
 #endif
