@@ -98,9 +98,9 @@ void Terminal::addch(char c)
 }
 void Terminal::addstr(std::string str)
 {
-	for (int x = cursX; x < cursX+str.length(); x++)
+	for (int x = cursX; x < cursX+(int)str.length(); x++)
 	{
-		if (x > columns)
+		if (x >= columns)
 			break;
 		screen[cursY][x] = str[x-cursX];
 	}
@@ -116,25 +116,31 @@ void Terminal::mvaddstr(int y, int x, std::string str)
 	addstr(str);
 }
 
-char* Terminal::getch()
+std::string Terminal::getch()
 {
+	std::string outStr = "?";
 	SDL_StartTextInput();
 	while (event.type != SDL_TEXTINPUT) {
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_TEXTINPUT) {
-			return event.text.text;
+			outStr = event.text.text;
+			break;
 		}
 	}
+	return outStr;
 }
 
 SDL_Keysym* Terminal::getkey()
 {
+	SDL_Keysym *key = &dummyKey;
 	while (event.type != SDL_KEYDOWN) {
 		SDL_WaitEvent(&event);
 		if (event.type == SDL_KEYDOWN) {
-			return &event.key.keysym;
+			key = &event.key.keysym;
+			break;
 		}
 	}
+	return key;
 }
 
 Terminal::~Terminal()

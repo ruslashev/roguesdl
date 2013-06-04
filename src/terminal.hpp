@@ -8,6 +8,9 @@
 #include <vector>
 #include <new>
 
+typedef unsigned int uint;
+static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
+
 // Imitates an emulator
 
 struct Cell
@@ -45,7 +48,7 @@ public:
 	void mvaddch(int y, int x, char c);
 	void mvaddstr(int y, int x, std::string str);
 
-	char* getch();
+	std::string getch();
 	SDL_Keysym* getkey();
 };
 

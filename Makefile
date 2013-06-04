@@ -1,5 +1,5 @@
 CXX = clang++
-CXXFLAGS = -Wall -g -ggdb -std=c++0x
+CXXFLAGS = -Wall -Wextra -g -ggdb -std=c++0x -O0
 OBJS = $(patsubst src/%.cpp, objs/%.o, $(shell find src -type f -name "*.cpp" ))
 EXECNAME = roguesdl
 LDFLAGS = -L/usr/local/lib #-L./libs

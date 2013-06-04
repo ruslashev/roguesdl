@@ -12,7 +12,7 @@ int main()
 	term.move(0, 0);
 	term.addch('r');
 	term.move(1, 0);
-	term.addstr("woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof woof");
+	term.addstr("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
 
 	term.mvaddch(3, 2, 's');
 	term.mvaddch(2, 2, '|');
@@ -20,8 +20,8 @@ int main()
 
 	term.RebuildSurface();
 
-	char* in;
-	SDL_Keysym key;
+	// std::string in = " ";
+	SDL_Keysym *key;
 
 	Uint32 eventType;
 	bool done = false;
@@ -30,14 +30,14 @@ int main()
 		SDL_WaitEvent(&term.event);
 		eventType = term.event.type;
 		done = (eventType == SDL_QUIT || eventType == SDL_MOUSEBUTTONDOWN);
+		printf("Update!\n");
 
 		term.Draw();
 
-		in = term.getch();
-		printf("in: %s\n", in);
-		key = *term.getkey();
-		printf("key: %s\n", SDL_GetScancodeName(key.scancode));
-		done = true;
+		key = term.getkey();
+
+		if (key->sym == SDLK_q)
+			done = true;
 	}
 
 	return 0;
