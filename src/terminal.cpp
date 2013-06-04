@@ -23,7 +23,7 @@ Terminal::Terminal(const char* title, int cols, int rws, \
 	columns = cols;
 	rows = rws;
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		fatal(1, "Failed to Initialize SDL: %s\n", SDL_GetError());
 
 	if (TTF_Init() == -1)
@@ -38,7 +38,7 @@ Terminal::Terminal(const char* title, int cols, int rws, \
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, \
 		SDL_WINDOWPOS_CENTERED, columns*fontWidth, rows*TTF_FontHeight(font), \
 		SDL_WINDOW_SHOWN);
-	if (window == NULL)
+	if (!window)
 		fatal(2, "Failed to open a window: %s\n", SDL_GetError());
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | \
@@ -92,12 +92,10 @@ void Terminal::move(int y, int x)
 	cursY = y;
 	cursX = x;
 }
-
 void Terminal::addch(char c)
 {
 	screen[cursY][cursX] = c;
 }
-
 void Terminal::addstr(std::string str)
 {
 	for (int x = cursX; x < cursX+str.length(); x++)
@@ -107,17 +105,36 @@ void Terminal::addstr(std::string str)
 		screen[cursY][x] = str[x-cursX];
 	}
 }
-
 void Terminal::mvaddch(int y, int x, char c)
 {
 	move(y, x);
 	addch(c);
 }
-
 void Terminal::mvaddstr(int y, int x, std::string str)
 {
 	move(y, x);
 	addstr(str);
+}
+
+char* Terminal::getch()
+{
+	SDL_StartTextInput();
+	while (event.type != SDL_TEXTINPUT) {
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_TEXTINPUT) {
+			return event.text.text;
+		}
+	}
+}
+
+SDL_Keysym* Terminal::getkey()
+{
+	while (event.type != SDL_KEYDOWN) {
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_KEYDOWN) {
+			return &event.key.keysym;
+		}
+	}
 }
 
 Terminal::~Terminal()

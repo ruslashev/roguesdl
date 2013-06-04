@@ -20,20 +20,24 @@ int main()
 
 	term.RebuildSurface();
 
+	char* in;
+	SDL_Keysym key;
+
+	Uint32 eventType;
 	bool done = false;
 	while (!done)
 	{
-		while (SDL_PollEvent(&term.events)) {
-			switch (term.events.type)
-			{
-				case SDL_QUIT:
-				case SDL_KEYDOWN:
-				case SDL_MOUSEBUTTONDOWN:
-					done = true;
-					break;
-			}
-		}
+		SDL_WaitEvent(&term.event);
+		eventType = term.event.type;
+		done = (eventType == SDL_QUIT || eventType == SDL_MOUSEBUTTONDOWN);
+
 		term.Draw();
+
+		in = term.getch();
+		printf("in: %s\n", in);
+		key = *term.getkey();
+		printf("key: %s\n", SDL_GetScancodeName(key.scancode));
+		done = true;
 	}
 
 	return 0;

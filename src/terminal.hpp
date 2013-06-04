@@ -27,7 +27,7 @@ private:
 public:
 	SDL_Window *window;
 	SDL_Renderer *renderer;
-	SDL_Event events;
+	SDL_Event event;
 	SDL_Texture *screenTexture;
 
 	int rows, columns;
@@ -44,6 +44,9 @@ public:
 	void addstr(std::string str);
 	void mvaddch(int y, int x, char c);
 	void mvaddstr(int y, int x, std::string str);
+
+	char* getch();
+	SDL_Keysym* getkey();
 };
 
 #endif
