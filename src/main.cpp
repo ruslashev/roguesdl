@@ -30,25 +30,22 @@ int main()
 		done = (term.event.type == SDL_QUIT || \
 				term.event.type == SDL_MOUSEBUTTONDOWN);
 
+		term.Draw();
+
 		key = term.getkey();
 
-		if (key->sym == SDLK_h) {
+		term.mvaddch(dude.y, dude.x, ' ');
+		if (key->sym == SDLK_h || key->sym == SDLK_LEFT) {
 			dude.x--;
-			printf("h");
-		} else if (key->sym == SDLK_j) {
+		} else if (key->sym == SDLK_j || key->sym == SDLK_DOWN) {
 			dude.y++;
-			printf("j");
-		} else if (key->sym == SDLK_k) {
+		} else if (key->sym == SDLK_k || key->sym == SDLK_UP) {
 			dude.y--;
-			printf("k");
-		} else if (key->sym == SDLK_l) {
+		} else if (key->sym == SDLK_l || key->sym == SDLK_RIGHT) {
 			dude.x++;
-			printf("l");
 		}
 		term.mvaddch(dude.y, dude.x, dude.icon);
 		term.RebuildSurface();
-
-		term.Draw();
 
 		if (key->sym == SDLK_q)
 			done = true;

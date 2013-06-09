@@ -62,9 +62,9 @@ Terminal::Terminal(const char* title, int cols, int rws, \
 
 void Terminal::RebuildSurface()
 {
-	// TODO optimizing n stuff
 	std::string rowStr;
 	SDL_Surface *fontSurf;
+	SDL_Texture *screenTexture;
 	for (int y = 0; y < rows; y++)
 	{
 		rowStr.clear();
@@ -76,15 +76,14 @@ void Terminal::RebuildSurface()
 		SDL_Rect offsetRect = { 0, fontSurf->h*y, fontSurf->w, fontSurf->h };
 		screenTexture = SDL_CreateTextureFromSurface(renderer, fontSurf);
 		SDL_RenderCopy(renderer, screenTexture, NULL, &offsetRect);
+		SDL_FreeSurface(fontSurf);
+		SDL_DestroyTexture(screenTexture);
 	}
-	SDL_FreeSurface(fontSurf);
 }
 
 void Terminal::Draw()
 {
 	// SDL_RenderClear(renderer);
-
-
 	SDL_RenderPresent(renderer);
 }
 
@@ -95,7 +94,8 @@ void Terminal::move(int y, int x)
 }
 void Terminal::addch(char c)
 {
-	screen[cursY][cursX] = c;
+	if (cursX <= columns-1 && cursY <= rows-1)
+		screen[cursY][cursX] = c;
 }
 void Terminal::addstr(std::string str)
 {
@@ -171,10 +171,9 @@ SDL_Keysym* Terminal::getkey()
 
 Terminal::~Terminal()
 {
-	SDL_DestroyTexture(screenTexture);
+	TTF_CloseFont(font);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	TTF_CloseFont(font);
 
 	TTF_Quit();
 
