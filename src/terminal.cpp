@@ -71,7 +71,7 @@ void Terminal::RebuildSurface()
 			rowStr.push_back(c);
 
 		fontSurf = TTF_RenderText_Shaded(font, rowStr.c_str(), \
-				{255, 255, 255}, {20, 20, 20});
+				{255, 255, 255, 255}, {20, 20, 20, 255});
 		SDL_Rect offsetRect = { 0, fontSurf->h*y, fontSurf->w, fontSurf->h };
 		screenTexture = SDL_CreateTextureFromSurface(renderer, fontSurf);
 		SDL_RenderCopy(renderer, screenTexture, NULL, &offsetRect);
@@ -129,7 +129,6 @@ std::string Terminal::getch()
 	}
 	return outStr;
 }
-
 SDL_Keysym* Terminal::getkey()
 {
 	SDL_Keysym *key = &dummyKey;
@@ -142,6 +141,32 @@ SDL_Keysym* Terminal::getkey()
 	}
 	return key;
 }
+// screw that
+// std::string Terminal::getkeyv()
+// {
+// 	SDL_Keysym key = dummyKey;
+// 	char textInputChar[100] = "unknown";
+// 	std::string outStr;
+//
+// 	SDL_StartTextInput();
+// 	while (SDL_PollEvent(&event)) {
+// 		if (event.type == SDL_TEXTINPUT) {
+// 			strcpy(textInputChar, event.text.text);
+// 			// printf("SDL_TEXTINPUT: %s\n", event.text.text);
+// 			break;
+// 		}
+// 	}
+//
+// 	printf("SDL_KEYDOWN: %s\n", SDL_GetKeyName(event.key.keysym.sym));
+//
+// 	// if (!strcmp(textInputChar, "unknown"))
+// 	// 	outStr = SDL_GetKeyName(key.sym);
+// 	// else
+// 	// 	outStr = textInputChar;
+//
+// 	printf("textInputChar = %s, keyname = %s\n\n", textInputChar, SDL_GetKeyName(key.sym));
+// 	return "hai";
+// }
 
 Terminal::~Terminal()
 {

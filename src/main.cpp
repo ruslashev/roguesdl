@@ -23,18 +23,16 @@ int main()
 	// std::string in = " ";
 	SDL_Keysym *key;
 
-	Uint32 eventType;
 	bool done = false;
 	while (!done)
 	{
 		SDL_WaitEvent(&term.event);
-		eventType = term.event.type;
-		done = (eventType == SDL_QUIT || eventType == SDL_MOUSEBUTTONDOWN);
-		printf("Update!\n");
+		done = (term.event.type == SDL_QUIT || term.event.type == SDL_MOUSEBUTTONDOWN);
 
 		term.Draw();
 
 		key = term.getkey();
+		// in = term.getch();
 
 		if (key->sym == SDLK_q)
 			done = true;

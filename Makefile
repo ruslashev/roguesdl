@@ -13,3 +13,6 @@ $(EXECNAME): $(OBJS)
 
 clean:
 	-rm -f objs/*.o $(EXECNAME)
+
+exec: $(EXECNAME)
+	./$(EXECNAME)

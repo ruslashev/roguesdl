@@ -50,6 +50,7 @@ public:
 
 	std::string getch();
 	SDL_Keysym* getkey();
+	std::string getkeyv();
 };
 
 #endif
