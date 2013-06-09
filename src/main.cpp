@@ -1,6 +1,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
+#include "entity.hpp"
 #include "main.hpp"
 #include "terminal.hpp"
 #include <fstream>
@@ -8,31 +9,46 @@
 int main()
 {
 	Terminal term("Hai", 80, 25, "SourceCodePro-Regular.otf", 13);
+	Player dude;
 
-	term.move(0, 0);
-	term.addch('r');
-	term.move(1, 0);
-	term.addstr("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-");
-
-	term.mvaddch(3, 2, 's');
-	term.mvaddch(2, 2, '|');
-	term.mvaddstr(3, 5, "peeeew pew pepwwp");
+	term.move(term.rows-4, 0);
+	for (int i = 0; i < term.columns; i++) {
+		term.move(term.rows-4, i);
+		term.addch('-'); // ─
+	}
+	term.mvaddstr(term.rows-3, 1, "Dudebro");
+	term.mvaddstr(term.rows-2, 1, "10/10");
 
 	term.RebuildSurface();
 
-	// std::string in = " ";
 	SDL_Keysym *key;
 
 	bool done = false;
 	while (!done)
 	{
 		SDL_WaitEvent(&term.event);
-		done = (term.event.type == SDL_QUIT || term.event.type == SDL_MOUSEBUTTONDOWN);
-
-		term.Draw();
+		done = (term.event.type == SDL_QUIT || \
+				term.event.type == SDL_MOUSEBUTTONDOWN);
 
 		key = term.getkey();
-		// in = term.getch();
+
+		if (key->sym == SDLK_h) {
+			dude.x--;
+			printf("h");
+		} else if (key->sym == SDLK_j) {
+			dude.y++;
+			printf("j");
+		} else if (key->sym == SDLK_k) {
+			dude.y--;
+			printf("k");
+		} else if (key->sym == SDLK_l) {
+			dude.x++;
+			printf("l");
+		}
+		term.mvaddch(dude.y, dude.x, dude.icon);
+		term.RebuildSurface();
+
+		term.Draw();
 
 		if (key->sym == SDLK_q)
 			done = true;

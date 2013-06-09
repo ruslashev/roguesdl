@@ -47,6 +47,7 @@ Terminal::Terminal(const char* title, int cols, int rws, \
 		fatal(2, "Failed to initialize a renderer: %s\n", SDL_GetError());
 
 	TTF_SetFontHinting(font, TTF_HINTING_LIGHT);
+	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
 
 	screen.resize(rows);
 	for (int y = 0; y < rows; y++)
