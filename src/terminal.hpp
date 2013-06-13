@@ -13,12 +13,12 @@ static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
 
 // Imitates an emulator
 
-struct Cell
-{
-	unsigned char ch;
-	// SDL_Color color;
-	// bool bold;
-};
+// struct Cell // sometime later
+// {
+// 	unsigned char ch;
+// 	// SDL_Color color;
+// 	// bool bold;
+// };
 
 class Terminal
 {

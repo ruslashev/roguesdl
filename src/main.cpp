@@ -4,6 +4,7 @@
 #include "entity.hpp"
 #include "main.hpp"
 #include "terminal.hpp"
+#include "world.hpp"
 #include <fstream>
 
 int main()
@@ -26,29 +27,33 @@ int main()
 	bool done = false;
 	while (!done)
 	{
-		SDL_WaitEvent(&term.event);
-		done = (term.event.type == SDL_QUIT || \
-				term.event.type == SDL_MOUSEBUTTONDOWN);
-
-		term.Draw();
-
 		key = term.getkey();
 
-		term.mvaddch(dude.y, dude.x, ' ');
+		SDL_WaitEvent(&term.event);
+		done = (term.event.type == SDL_QUIT || \
+				term.event.type == SDL_MOUSEBUTTONDOWN || \
+				key->sym == SDLK_q);
+
+		printf("%s ", SDL_GetKeyName(key->sym));
+
 		if (key->sym == SDLK_h || key->sym == SDLK_LEFT) {
+			term.mvaddch(dude.y, dude.x, ' ');
 			dude.x--;
 		} else if (key->sym == SDLK_j || key->sym == SDLK_DOWN) {
+			term.mvaddch(dude.y, dude.x, ' ');
 			dude.y++;
 		} else if (key->sym == SDLK_k || key->sym == SDLK_UP) {
+			term.mvaddch(dude.y, dude.x, ' ');
 			dude.y--;
 		} else if (key->sym == SDLK_l || key->sym == SDLK_RIGHT) {
+			term.mvaddch(dude.y, dude.x, ' ');
 			dude.x++;
 		}
+
 		term.mvaddch(dude.y, dude.x, dude.icon);
 		term.RebuildSurface();
 
-		if (key->sym == SDLK_q)
-			done = true;
+		term.Draw();
 	}
 
 	return 0;
