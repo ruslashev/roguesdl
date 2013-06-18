@@ -1,21 +1,5 @@
 #include "terminal.hpp"
-
-// template<typename T>
-// T std::vector<std::vector<T>>::at(int x, int y)
-// {
-// 	return (*this)[y][x];
-// }
-
-void fatal(int code, const char* format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	fprintf(stderr, "%sERROR%s ", "\e[31m", "\e[0m");
-	vfprintf(stderr, format, args);
-	va_end(args);
-
-	exit(code);
-}
+#include "utils.hpp"
 
 Terminal::Terminal(const char* title, int cols, int rws, \
 		const char* fontPath, int fontSize)

@@ -2,34 +2,31 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #include "entity.hpp"
+#include "gamestatemanager.hpp"
 #include "main.hpp"
 #include "terminal.hpp"
 #include "world.hpp"
 #include <fstream>
+#include <vector>
 
-enum GameStates {
-	Splash = 1,
-	Intro,
-	Game
-};
-
-void UpdateState(GameStates *gameState, Terminal &term)
+class IntroState : public GameState
 {
-	switch (*gameState)
-	{
-	case Splash:
-		term.mvaddstr(0, 0, "Splash!");
-		term.RebuildSurface();
-		break;
-	case Intro:
-		term.mvaddstr(0, 0, "Intro!");
-		term.RebuildSurface();
-		break;
-	case Game:
-		term.mvaddstr(0, 0, "Game!");
-		term.RebuildSurface();
+	void Enter() {
+		printf("IntroState::Enter\n");
 	}
-}
+	void Exit() {
+		printf("IntroState::Exit\n");
+	}
+	void Pause() {
+		printf("IntroState::Pause\n");
+	}
+	void Resume() {
+		printf("IntroState::Resume\n");
+	}
+	void Step() {
+		printf("IntroState::Step()\n");
+	}
+};
 
 int main()
 {
@@ -46,12 +43,13 @@ int main()
 	// term.mvaddstr(term.rows-2, 1, "10/10");
 	// term.RebuildSurface();
 
-	GameStates currentState = Splash;
-
 	// SDL_Keysym *key;
 
-	bool done = false;
-	while (!done)
+	GameStateManager gsm;
+	IntroState introState;
+	gsm.ChangeTo(&introState);
+
+	while (!gsm.done)
 	{
 		// key = term.getkey();
 
@@ -79,7 +77,7 @@ int main()
 		// term.mvaddch(dude.y, dude.x, dude.icon);
 		// term.RebuildSurface();
 
-		UpdateState(&currentState, term);
+		gsm.states.back()->Step();
 		term.Draw();
 	}
 
