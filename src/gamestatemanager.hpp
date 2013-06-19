@@ -10,8 +10,9 @@ class GameStateManager;
 class GameState
 {
 public:
-	// Terminal *term;
+	Terminal *term;
 	GameStateManager *gsm;
+	SDL_Keysym *key;
 
 	virtual void Enter() = 0;
 	virtual void Exit() = 0;

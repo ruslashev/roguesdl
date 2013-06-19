@@ -151,7 +151,8 @@ SDL_Keysym* Terminal::getkey()
 // 	// else
 // 	// 	outStr = textInputChar;
 //
-// 	printf("textInputChar = %s, keyname = %s\n\n", textInputChar, SDL_GetKeyName(key.sym));
+// 	printf("textInputChar = %s, keyname = %s\n\n", textInputChar, \
+// 			SDL_GetKeyName(key.sym));
 // 	return "hai";
 // }
 
