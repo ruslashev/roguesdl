@@ -1,17 +1,14 @@
 #ifndef TERMINAL_HPP
 #define TERMINAL_HPP
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <new>
 
-typedef unsigned int uint;
-static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
-
 // Imitates an emulator
+
 
 // struct Cell // sometime later
 // {
@@ -49,7 +46,7 @@ public:
 
 	std::string getch();
 	SDL_Keysym* getkey();
-	std::string getkeyv();
+	// std::string getkeyv();
 };
 
 #endif

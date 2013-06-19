@@ -2,11 +2,17 @@
 #define GAMESTATEMANAGER_HPP
 
 #include "utils.hpp"
+#include "terminal.hpp"
 #include <vector>
+
+class GameStateManager;
 
 class GameState
 {
 public:
+	// Terminal *term;
+	GameStateManager *gsm;
+
 	virtual void Enter() = 0;
 	virtual void Exit() = 0;
 
@@ -14,6 +20,9 @@ public:
 	virtual void Resume() = 0;
 
 	virtual void Step() = 0; // aka Update
+
+protected:
+	GameState() {}
 };
 
 class GameStateManager
@@ -23,12 +32,8 @@ public:
 	bool done;
 
 	void ChangeTo(GameState *newState) {
-		if (!states.empty()) {
-			states.back()->Exit();
-			states.pop_back();
-		}
-		states.push_back(newState);
-		states.back()->Enter();
+		Pop();
+		Push(newState);
 	}
 
 	void Push(GameState *newState) {
@@ -46,11 +51,8 @@ public:
 		} else {
 			warning("Tried to pop from an empty state stack!\n");
 		}
-		if (!states.empty()) {
+		if (!states.empty())
 			states.back()->Resume();
-		} else {
-			fatal(1, "Tried to pop state from stack with only one state!\n");
-		}
 	}
 };
 

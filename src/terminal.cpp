@@ -1,6 +1,8 @@
 #include "terminal.hpp"
 #include "utils.hpp"
 
+static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
+
 Terminal::Terminal(const char* title, int cols, int rws, \
 		const char* fontPath, int fontSize)
 {
