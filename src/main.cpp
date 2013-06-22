@@ -32,7 +32,7 @@ public:
 	void Resume() {
 		printf("PlayState::Resume\n");
 	}
-	void Step() {
+	void Step(GameStateManager *gsm) {
 		key = term->getkey();
 
 		SDL_WaitEvent(&term->event);
@@ -61,8 +61,8 @@ public:
 	}
 
 	static PlayState* Instance() { return &m_PlayState; }
-protected: PlayState() {}
-private: static PlayState m_PlayState;
+	protected: PlayState() {}
+	private: static PlayState m_PlayState;
 };
 
 class IntroState : public GameState
@@ -77,25 +77,25 @@ public:
 	}
 	void Pause() {
 		printf("IntroState::Pause\n");
+		term->clear();
 	}
 	void Resume() {
 		printf("IntroState::Resume\n");
 	}
-	void Step() {
-		term->mvaddstr(1, 0, "Press enter to -begin-your-ADVENTURE- segfault!");
+	void Step(GameStateManager *gsm) {
+		term->mvaddstr(1, 0, "Press enter to begin your adventure!");
 		term->RebuildSurface();
 
 		key = term->getkey();
 		SDL_WaitEvent(&term->event);
 
-		if (key->sym == SDLK_RETURN) {
-			gsm->Push(PlayState::Instance());
-		}
+		if (key->sym == SDLK_RETURN)
+			gsm->PushState(PlayState::Instance());
 	}
 
 	static IntroState* Instance() { return &m_IntroState; }
-protected: IntroState() {}
-private: static IntroState m_IntroState;
+	protected: IntroState() {}
+	private: static IntroState m_IntroState;
 };
 
 PlayState PlayState::m_PlayState;
@@ -109,11 +109,11 @@ int main()
 	IntroState::Instance()->term = &term;
 	PlayState::Instance()->term = &term;
 
-	gsm.Push(IntroState::Instance());
+	gsm.PushState(IntroState::Instance());
 
 	while (!gsm.done)
 	{
-		gsm.states.back()->Step();
+		gsm.states.back()->Step(&gsm);
 		term.Draw();
 	}
 

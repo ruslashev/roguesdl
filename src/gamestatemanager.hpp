@@ -5,13 +5,23 @@
 #include "terminal.hpp"
 #include <vector>
 
-class GameStateManager;
+class GameState;
+
+class GameStateManager
+{
+public:
+	bool done;
+	std::vector<GameState*> states;
+
+	void ChangeTo(GameState *newState);
+	void PushState(GameState *newState);
+	void PopState();
+};
 
 class GameState
 {
 public:
 	Terminal *term;
-	GameStateManager *gsm;
 	SDL_Keysym *key;
 
 	virtual void Enter() = 0;
@@ -20,41 +30,10 @@ public:
 	virtual void Pause() = 0;
 	virtual void Resume() = 0;
 
-	virtual void Step() = 0; // aka Update
+	virtual void Step(GameStateManager *gsm) = 0; // aka Update
 
 protected:
 	GameState() {}
-};
-
-class GameStateManager
-{
-public:
-	std::vector<GameState*> states;
-	bool done;
-
-	void ChangeTo(GameState *newState) {
-		Pop();
-		Push(newState);
-	}
-
-	void Push(GameState *newState) {
-		if (!states.empty())
-			states.back()->Pause();
-
-		states.push_back(newState);
-		states.back()->Enter();
-	}
-
-	void Pop() {
-		if (!states.empty()) {
-			states.back()->Exit();
-			states.pop_back();
-		} else {
-			warning("Tried to pop from an empty state stack!\n");
-		}
-		if (!states.empty())
-			states.back()->Resume();
-	}
 };
 
 #endif

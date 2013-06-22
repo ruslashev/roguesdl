@@ -39,9 +39,7 @@ Terminal::Terminal(const char* title, int cols, int rws, \
 	for (int y = 0; y < rows; y++)
 		screen[y].resize(columns);
 
-	for (int y = 0; y < rows; y++)
-		for (int x = 0; x < columns; x++)
-			screen[y][x] = ' ';
+	clear();
 
 	RebuildSurface();
 }
@@ -101,6 +99,13 @@ void Terminal::mvaddstr(int y, int x, std::string str)
 {
 	move(y, x);
 	addstr(str);
+}
+
+void Terminal::clear()
+{
+	for (int y = 0; y < rows; y++)
+		for (int x = 0; x < columns; x++)
+			screen[y][x] = ' ';
 }
 
 std::string Terminal::getch()

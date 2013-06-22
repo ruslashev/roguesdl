@@ -44,6 +44,8 @@ public:
 	void mvaddch(int y, int x, char c);
 	void mvaddstr(int y, int x, std::string str);
 
+	void clear();
+
 	std::string getch();
 	SDL_Keysym* getkey();
 	// std::string getkeyv();
