@@ -17,7 +17,7 @@ public:
 		term->move(term->rows-4, 0);
 		for (int i = 0; i < term->columns; i++) {
 			term->move(term->rows-4, i);
-			term->addch('-'); // ─
+			term->addch("-"); // ─
 		}
 		term->mvaddstr(term->rows-3, 1, "Dudebro");
 		term->mvaddstr(term->rows-2, 1, "10/10");
@@ -33,30 +33,32 @@ public:
 		printf("PlayState::Resume\n");
 	}
 	void Step(GameStateManager *gsm) {
-		key = term->getkey();
-
-		SDL_WaitEvent(&term->event);
-		gsm->done = (term->event.type == SDL_QUIT || \
-				term->event.type == SDL_MOUSEBUTTONDOWN || \
-				key->sym == SDLK_q);
-
-		printf("%s ", SDL_GetKeyName(key->sym));
-
-		if (key->sym == SDLK_h || key->sym == SDLK_LEFT) {
-			term->mvaddch(dude.y, dude.x, ' ');
-			dude.x--;
-		} else if (key->sym == SDLK_j || key->sym == SDLK_DOWN) {
-			term->mvaddch(dude.y, dude.x, ' ');
-			dude.y++;
-		} else if (key->sym == SDLK_k || key->sym == SDLK_UP) {
-			term->mvaddch(dude.y, dude.x, ' ');
-			dude.y--;
-		} else if (key->sym == SDLK_l || key->sym == SDLK_RIGHT) {
-			term->mvaddch(dude.y, dude.x, ' ');
-			dude.x++;
+		SDL_WaitEvent(&term->event); {
+			if (term->event.type == SDL_KEYDOWN) {
+				key = term->event.key.keysym;
+				printf("Keyname: %s\n", SDL_GetKeyName(key.sym));
+				// break;
+			}
 		}
 
-		term->mvaddch(dude.y, dude.x, dude.icon);
+		gsm->done = (term->event.type == SDL_QUIT || \
+				term->event.type == SDL_MOUSEBUTTONDOWN);
+
+		if (key.sym == SDLK_h || key.sym == SDLK_LEFT) {
+			term->mvaddch(dude.y, dude.x, " ");
+			dude.x--;
+		} else if (key.sym == SDLK_j || key.sym == SDLK_DOWN) {
+			term->mvaddch(dude.y, dude.x, " ");
+			dude.y++;
+		} else if (key.sym == SDLK_k || key.sym == SDLK_UP) {
+			term->mvaddch(dude.y, dude.x, " ");
+			dude.y--;
+		} else if (key.sym == SDLK_l || key.sym == SDLK_RIGHT) {
+			term->mvaddch(dude.y, dude.x, " ");
+			dude.x++;
+		}
+		term->mvaddch(dude.y, dude.x, std::string(1, dude.icon));
+
 		term->RebuildSurface();
 	}
 
@@ -87,9 +89,9 @@ public:
 		term->RebuildSurface();
 
 		key = term->getkey();
-		SDL_WaitEvent(&term->event);
+		// SDL_WaitEvent(&term->event);
 
-		if (key->sym == SDLK_RETURN)
+		if (key.sym == SDLK_RETURN)
 			gsm->PushState(PlayState::Instance());
 	}
 
@@ -105,6 +107,7 @@ int main()
 {
 	Terminal term("Roguesdl", 80, 25, "SourceCodePro-Regular.otf", 13);
 	GameStateManager gsm;
+	gsm.done = false;
 
 	IntroState::Instance()->term = &term;
 	PlayState::Instance()->term = &term;

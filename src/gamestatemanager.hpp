@@ -22,7 +22,7 @@ class GameState
 {
 public:
 	Terminal *term;
-	SDL_Keysym *key;
+	SDL_Keysym key;
 
 	virtual void Enter() = 0;
 	virtual void Exit() = 0;

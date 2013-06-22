@@ -52,8 +52,8 @@ void Terminal::RebuildSurface()
 	for (int y = 0; y < rows; y++)
 	{
 		rowStr.clear();
-		for (char &c : screen[y])
-			rowStr.push_back(c);
+		for (std::string &str : screen[y])
+			rowStr.push_back(str[0]);
 
 		fontSurf = TTF_RenderText_Shaded(font, rowStr.c_str(), \
 				{255, 255, 255, 255}, {20, 20, 20, 255});
@@ -76,10 +76,10 @@ void Terminal::move(int y, int x)
 	cursY = y;
 	cursX = x;
 }
-void Terminal::addch(char c)
+void Terminal::addch(std::string c)
 {
 	if (cursX <= columns-1 && cursY <= rows-1)
-		screen[cursY][cursX] = c;
+		screen[cursY][cursX].assign(c);
 }
 void Terminal::addstr(std::string str)
 {
@@ -90,7 +90,7 @@ void Terminal::addstr(std::string str)
 		screen[cursY][x] = str[x-cursX];
 	}
 }
-void Terminal::mvaddch(int y, int x, char c)
+void Terminal::mvaddch(int y, int x, std::string c)
 {
 	move(y, x);
 	addch(c);
@@ -105,7 +105,7 @@ void Terminal::clear()
 {
 	for (int y = 0; y < rows; y++)
 		for (int x = 0; x < columns; x++)
-			screen[y][x] = ' ';
+			screen[y][x] = " ";
 }
 
 std::string Terminal::getch()
@@ -121,18 +121,30 @@ std::string Terminal::getch()
 	}
 	return outStr;
 }
-SDL_Keysym* Terminal::getkey()
+SDL_Keysym Terminal::getkey()
 {
-	SDL_Keysym *key = &dummyKey;
-	while (event.type != SDL_KEYDOWN) {
-		SDL_WaitEvent(&event);
+// 	SDL_Keysym *key = &dummyKey;
+// 	SDL_WaitEvent(&event);
+// 	while (event.type != SDL_KEYDOWN) {
+// 		SDL_WaitEvent(&event);
+// 		if (event.type == SDL_KEYDOWN) {
+// 			key = &event.key.keysym;
+// 			break;
+// 		}
+// 	}
+// 	return key;
+
+	SDL_Keysym key;
+
+	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_KEYDOWN) {
-			key = &event.key.keysym;
+			key = event.key.keysym;
 			break;
 		}
 	}
 	return key;
 }
+
 // screw that
 // std::string Terminal::getkeyv()
 // {
@@ -156,7 +168,7 @@ SDL_Keysym* Terminal::getkey()
 // 	// else
 // 	// 	outStr = textInputChar;
 //
-// 	printf("textInputChar = %s, keyname = %s\n\n", textInputChar, \
+// 	printf("textInputChar = %s, keyname = %s\n\n", textInputChar,
 // 			SDL_GetKeyName(key.sym));
 // 	return "hai";
 // }

@@ -23,7 +23,7 @@ private:
 	TTF_Font *font;
 
 	unsigned short cursX = 0, cursY = 0;
-	std::vector<std::vector<char>> screen;
+	std::vector<std::vector<std::string>> screen;
 public:
 	SDL_Window *window;
 	SDL_Renderer *renderer;
@@ -39,15 +39,15 @@ public:
 	void Draw();
 
 	void move(int y, int x);
-	void addch(char c);
+	void addch(std::string c);
 	void addstr(std::string str);
-	void mvaddch(int y, int x, char c);
+	void mvaddch(int y, int x, std::string c);
 	void mvaddstr(int y, int x, std::string str);
 
 	void clear();
 
 	std::string getch();
-	SDL_Keysym* getkey();
+	SDL_Keysym getkey();
 	// std::string getkeyv();
 };
 
