@@ -1,7 +1,7 @@
 #include "terminal.hpp"
 #include "utils.hpp"
 
-static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
+// static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
 
 Terminal::Terminal(const char* title, int cols, int rws, \
 		const char* fontPath, int fontSize)
@@ -53,9 +53,9 @@ void Terminal::RebuildSurface()
 	{
 		rowStr.clear();
 		for (std::string &str : screen[y])
-			rowStr.push_back(str[0]);
+			rowStr += str;
 
-		fontSurf = TTF_RenderText_Shaded(font, rowStr.c_str(), \
+		fontSurf = TTF_RenderUTF8_Shaded(font, rowStr.c_str(), \
 				{255, 255, 255, 255}, {20, 20, 20, 255});
 		SDL_Rect offsetRect = { 0, fontSurf->h*y, fontSurf->w, fontSurf->h };
 		screenTexture = SDL_CreateTextureFromSurface(renderer, fontSurf);

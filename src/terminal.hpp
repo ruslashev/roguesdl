@@ -31,7 +31,7 @@ public:
 
 	int rows, columns;
 
-	Terminal(const char* title, int columns, int rows, const char* fontPath, \
+	Terminal(const char* title, int cols, int rws, const char* fontPath, \
 			int fontSize);
 	~Terminal();
 

@@ -16,6 +16,8 @@ public:
 	void ChangeTo(GameState *newState);
 	void PushState(GameState *newState);
 	void PopState();
+
+	GameStateManager() : done(false) {}
 };
 
 class GameState
