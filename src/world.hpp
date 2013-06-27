@@ -5,7 +5,7 @@
 class World
 {
 public:
-	std::vector<std::vector<int>> map;
+	std::vector<std::vector<char>> map;
 	int width, height;
 
 	World(int newWidth, int newHeight);

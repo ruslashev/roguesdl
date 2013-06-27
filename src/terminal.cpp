@@ -4,11 +4,8 @@
 // static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
 
 Terminal::Terminal(const char* title, int cols, int rws, \
-		const char* fontPath, int fontSize)
+		const char* fontPath, int fontSize) : rows(rws), columns(cols)
 {
-	columns = cols;
-	rows = rws;
-
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		fatal(1, "Failed to Initialize SDL: %s\n", SDL_GetError());
 

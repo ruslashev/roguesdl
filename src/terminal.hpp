@@ -29,7 +29,7 @@ public:
 	SDL_Renderer *renderer;
 	SDL_Event event;
 
-	int rows, columns;
+	const int rows, columns;
 
 	Terminal(const char* title, int cols, int rws, const char* fontPath, \
 			int fontSize);
