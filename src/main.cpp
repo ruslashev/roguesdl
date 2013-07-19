@@ -45,7 +45,7 @@ public:
 		}
 
 		gsm->done = (term->event.type == SDL_QUIT || \
-				term->event.type == SDL_MOUSEBUTTONDOWN);
+				term->event.type == SDL_MOUSEBUTTONDOWN || key.sym == SDLK_q);
 
 		if (update) {
 			if (key.sym == SDLK_h || key.sym == SDLK_LEFT) {
@@ -94,7 +94,21 @@ class IntroState : public GameState
 {
 public:
 	void Enter() {
-		term->mvaddstr(0, 0, "Welcome to ...!");
+		term->mvaddstr(3, term->columns/2-14/2, "Welcome to ...");
+
+		term->mvaddstr(6, 6, \
+		"   ___                     ___ _      ______________  __  _______");
+		term->mvaddstr(7, 6, \
+		"  / _ \\___  ___ ___ _____ / _ | | /| / / __/ __/ __ \\/  |/  / __/");
+		term->mvaddstr(8, 6, \
+		" / , _/ _ \\/ _ `/ // / -_) __ | |/ |/ / _/_\\ \\/ /_/ / /|_/ / _/  ");
+		term->mvaddstr(9, 6, \
+		"/_/|_|\\___/\\_, /\\_,_/\\__/_/ |_|__/|__/___/___/\\____/_/  /_/___/");
+		term->mvaddstr(10, 6, \
+		"          /___/");
+
+		term->mvaddstr(14, term->columns/2-36/2, "Press enter to begin your adventure!");
+
 		term->RebuildSurface();
 	}
 	void Exit() {
@@ -108,14 +122,14 @@ public:
 		printf("IntroState::Resume\n");
 	}
 	void Step(GameStateManager *gsm) {
-		term->mvaddstr(1, 0, "Press enter to begin your adventure!");
-		term->RebuildSurface();
 		term->Draw();
 
 		key = term->getkey();
 
 		if (key.sym == SDLK_RETURN)
 			gsm->PushState(PlayState::Instance());
+		if (key.sym == SDLK_q)
+			gsm->done = true;
 	}
 
 	static IntroState* Instance() { return &m_IntroState; }

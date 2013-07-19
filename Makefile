@@ -5,6 +5,9 @@ EXECNAME = roguesdl
 LDFLAGS = -L/usr/local/lib #-L./libs
 LIBS = -lSDL2_ttf -lSDL2
 
+all: $(EXECNAME)
+	./$(EXECNAME)
+
 objs/%.o: src/%.cpp
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
@@ -14,5 +17,3 @@ $(EXECNAME): $(OBJS)
 clean:
 	-rm -f objs/*.o $(EXECNAME)
 
-exec: $(EXECNAME)
-	./$(EXECNAME)
