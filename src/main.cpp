@@ -1,10 +1,12 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_ttf.h"
+#include "clientstate.hpp"
 #include "entity.hpp"
 #include "gamestatemanager.hpp"
 #include "introstate.hpp"
 #include "main.hpp"
 #include "playstate.hpp"
+#include "serverstate.hpp"
 #include "terminal.hpp"
 #include "world.hpp"
 #include <fstream>
@@ -12,11 +14,13 @@
 
 int main()
 {
-	Terminal term("Roguesdl", 80, 25, "DroidSansMono.ttf", 13);
+	Terminal term("RogueAWESOME", 80, 25, "DroidSansMono.ttf", 13);
 	GameStateManager gsm;
 
 	IntroState::Instance()->term = &term;
 	PlayState::Instance()->term = &term;
+	ServerState::Instance()->term = &term;
+	ClientState::Instance()->term = &term;
 
 	gsm.PushState(IntroState::Instance());
 

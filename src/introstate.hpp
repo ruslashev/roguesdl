@@ -5,6 +5,8 @@
 #include "playstate.hpp"
 #include "terminal.hpp"
 #include "world.hpp"
+#include "serverstate.hpp"
+#include "clientstate.hpp"
 
 class IntroState : public GameState
 {
