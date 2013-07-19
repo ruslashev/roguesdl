@@ -2,7 +2,8 @@
 
 IntroState IntroState::m_IntroState;
 
-void IntroState::Enter() {
+void IntroState::Enter()
+{
 	term->mvaddstr(3, term->columns/2-14/2, "Welcome to ...");
 
 	term->mvaddstr(6, 7, \
@@ -21,20 +22,24 @@ void IntroState::Enter() {
 	term->RebuildSurface();
 }
 
-void IntroState::Exit() {
+void IntroState::Exit()
+{
 	printf("IntroState::Exit\n");
 }
 
-void IntroState::Pause() {
+void IntroState::Pause()
+{
 	printf("IntroState::Pause\n");
 	term->clear();
 }
 
-void IntroState::Resume() {
+void IntroState::Resume()
+{
 	printf("IntroState::Resume\n");
 }
 
-void IntroState::Step(GameStateManager *gsm) {
+void IntroState::Step(GameStateManager *gsm)
+{
 	term->Draw();
 
 	key = term->getkey();

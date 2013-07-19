@@ -2,7 +2,8 @@
 
 PlayState PlayState::m_PlayState;
 
-void PlayState::Enter() {
+void PlayState::Enter()
+{
 	update = true;
 
 	term->move(term->rows-4, 0);
@@ -15,19 +16,23 @@ void PlayState::Enter() {
 	term->RebuildSurface();
 }
 
-void PlayState::Exit() {
+void PlayState::Exit()
+{
 	printf("PlayState::Exit\n");
 }
 
-void PlayState::Pause() {
+void PlayState::Pause()
+{
 	printf("PlayState::Pause\n");
 }
 
-void PlayState::Resume() {
+void PlayState::Resume()
+{
 	printf("PlayState::Resume\n");
 }
 
-void PlayState::Step(GameStateManager *gsm) {
+void PlayState::Step(GameStateManager *gsm)
+{
 	SDL_WaitEvent(&term->event);
 	if (term->event.type == SDL_KEYDOWN) {
 		key = term->event.key.keysym;
