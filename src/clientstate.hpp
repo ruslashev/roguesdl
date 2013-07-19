@@ -1,11 +1,18 @@
 #ifndef CLIENTSTATE_HPP
 #define CLIENTSTATE_HPP
+#include "SDL2/SDL_net.h"
 #include "gamestatemanager.hpp"
 #include "terminal.hpp"
 
 class ClientState : public GameState
 {
 public:
+	TCPsocket sockDesc, clSockDesc;
+	IPaddress IP, *remoteIP;
+	char buffer[512];
+	bool quit;
+	int len;
+
 	void Enter();
 	void Exit();
 	void Pause();
