@@ -10,7 +10,6 @@ public:
 	TCPsocket sockDesc, clSockDesc;
 	IPaddress IP, *remoteIP;
 	char buffer[512];
-	bool quit;
 	int len;
 
 	void Enter();

@@ -11,7 +11,7 @@ public:
 	TCPsocket sockDesc, clSockDesc;
 	IPaddress IP, *remoteIP;
 	char buffer[512];
-	bool quit, quit2;
+	Uint32 clAddr;
 
 	void Enter();
 	void Exit();

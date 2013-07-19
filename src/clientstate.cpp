@@ -38,23 +38,18 @@ void ClientState::Step(GameStateManager *gsm)
 	key = term->getkey();
 
 	printf("> ");
-	scanf("%s", buffer);
+	fgets(buffer, 512, stdin);
+	len = strlen(buffer);
+	// trim newline if it's there
+	if (len > 0)
+		buffer[len-1] = '\0';
 
-	len = strlen(buffer) + 1;
 	if (SDLNet_TCP_Send(sockDesc, (void*)buffer, len) < len)
 		fatal(3, "Couldn't send a message: %s\n", SDLNet_GetError());
 
-	if (strcmp(buffer, "disonnect") == 0) {
-		printf("Disconnecting\n");
-		gsm->done = true;
-	}
 	if (strcmp(buffer, "exit") == 0) {
 		printf("Disconnecting\n");
 		gsm->done = true;
 	}
-
-	if (key.sym == SDLK_q)
-		gsm->done = true;
 }
-
 

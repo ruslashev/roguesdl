@@ -38,43 +38,40 @@ void ServerState::Step(GameStateManager *gsm)
 
 	key = term->getkey();
 
-	quit = quit2 = false;
-	while (!quit)
-	{
-		if (key.sym == SDLK_q)
-			gsm->done = true;
-
-		// Check if there is a pending connection
-		if ((clSockDesc = SDLNet_TCP_Accept(sockDesc)))
-		{
-			// Now we can communicate with the client using clSockDesc socket
-			// sockDesc will remain opened waiting other connections
- 
-			// Get the remote address
-			if ((remoteIP = SDLNet_TCP_GetPeerAddress(clSockDesc)))
-				printf("Host connected: %x:%d\n", SDLNet_Read32(&remoteIP->host), SDLNet_Read16(&remoteIP->port));
-			else
-				fatal(3, "Failed to get connected host's address: %s\n", SDLNet_GetError());
- 
-			while (!quit2)
-			{
-				if (SDLNet_TCP_Recv(clSockDesc, buffer, 512) > 0)
-				{
-					printf("<client> %s\n", buffer);
- 
-					if (strcmp(buffer, "disconnect") == 0)
-						quit2 = true;
-					if (strcmp(buffer, "exit") == 0)
-						quit2 = quit = true;
-				}
-			}
- 
-			// Close the client socket
-			SDLNet_TCP_Close(clSockDesc);
-		}
-	}
-
 	if (key.sym == SDLK_q)
 		gsm->done = true;
+
+	// Check if there is a pending connection
+	if ((clSockDesc = SDLNet_TCP_Accept(sockDesc)))
+	{
+		// There is!
+		// Now we can communicate with the client using clSockDesc socket
+		// sockDesc will remain opened waiting other connections
+
+		// Get the remote address
+		remoteIP = SDLNet_TCP_GetPeerAddress(clSockDesc);
+		if (!remoteIP)
+			fatal(3, "Failed to get connected host's address: %s\n", \
+					SDLNet_GetError());
+		printf("Host connected: ");
+		clAddr = SDLNet_Read32(&remoteIP->host);
+		printf("%d.%d.%d.%d:%d\n", \
+				(clAddr >> 24) & 0xFF, (clAddr >> 16) & 0xFF, \
+				(clAddr >> 8 ) & 0xFF, (clAddr >> 0 ) & 0xFF, \
+				SDLNet_Read16(&remoteIP->port));
+
+		while (1)
+		{
+			if (SDLNet_TCP_Recv(clSockDesc, buffer, 512) > 0) {
+				printf("<- %s\n", buffer);
+
+				if (strcmp(buffer, "exit") == 0)
+					break;
+			}
+		}
+
+		SDLNet_TCP_Close(clSockDesc);
+		gsm->done = true;
+	}
 }
 
