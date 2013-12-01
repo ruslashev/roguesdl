@@ -1,5 +1,6 @@
 #ifndef WORLD_HPP
 #define WORLD_HPP
+
 #include <vector>
 
 class World

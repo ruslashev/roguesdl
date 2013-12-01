@@ -1,5 +1,6 @@
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
 #include "clientstate.hpp"
 #include "entity.hpp"
 #include "gamestatemanager.hpp"
@@ -9,6 +10,7 @@
 #include "serverstate.hpp"
 #include "terminal.hpp"
 #include "world.hpp"
+
 #include <fstream>
 #include <vector>
 

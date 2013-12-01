@@ -1,6 +1,8 @@
 #ifndef CLIENTSTATE_HPP
 #define CLIENTSTATE_HPP
-#include "SDL2/SDL_net.h"
+
+#include <SDL2/SDL_net.h>
+
 #include "gamestatemanager.hpp"
 #include "terminal.hpp"
 

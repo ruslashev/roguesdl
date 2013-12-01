@@ -1,11 +1,11 @@
 #ifndef TERMINAL_HPP
 #define TERMINAL_HPP
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
-#include <iostream>
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
 #include <string>
 #include <vector>
-#include <new>
 
 // Imitates an emulator
 

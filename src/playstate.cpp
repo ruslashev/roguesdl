@@ -40,7 +40,7 @@ void PlayState::Step(GameStateManager *gsm)
 		update = true;
 	}
 
-	gsm->done = (term->event.type == SDL_QUIT || \
+	gsm->done = (term->event.type == SDL_QUIT ||
 			term->event.type == SDL_MOUSEBUTTONDOWN || key.sym == SDLK_q);
 
 	if (update) {

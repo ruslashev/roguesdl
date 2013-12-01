@@ -6,16 +6,19 @@ void IntroState::Enter()
 {
 	term->mvaddstr(3, term->columns/2-14/2, "Welcome to ...");
 
-	term->mvaddstr(6, 7, \
-		"   ___                     ___ _      ______________  __  _______");
-	term->mvaddstr(7, 7, \
-		"  / _ \\___  ___ ___ _____ / _ | | /| / / __/ __/ __ \\/  |/  / __/");
-	term->mvaddstr(8, 7, \
-		" / , _/ _ \\/ _ `/ // / -_) __ | |/ |/ / _/_\\ \\/ /_/ / /|_/ / _/");
-	term->mvaddstr(9, 7, \
-		"/_/|_|\\___/\\_, /\\_,_/\\__/_/ |_|__/|__/___/___/\\____/_/  /_/___/");
-	term->mvaddstr(10, 7, \
-		"          /___/");
+	const char *splash[5] = {
+		R"(   ___                     ___ _      ______________  __  _______)",
+		R"(  / _ \___  ___ ___ _____ / _ | | /| / / __/ __/ __ \/  |/  / __/)",
+		R"( / , _/ _ \/ _ `/ // / -_) __ | |/ |/ / _/_\ \/ /_/ / /|_/ / _/)",
+		R"(/_/|_|\___/\_, /\_,_/\__/_/ |_|__/|__/___/___/\____/_/  /_/___/)",
+		R"(          /___/)"
+	};
+
+	term->mvaddstr(6,  7, splash[0]);
+	term->mvaddstr(7,  7, splash[1]);
+	term->mvaddstr(8,  7, splash[2]);
+	term->mvaddstr(9,  7, splash[3]);
+	term->mvaddstr(10, 7, splash[4]);
 
 	term->mvaddstr(14, term->columns/2-36/2, "Press enter to begin your adventure!");
 

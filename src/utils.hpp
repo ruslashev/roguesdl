@@ -1,9 +1,7 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
+
 #include <iostream>
-#include <string>
-#include <vector>
-#include <new>
 #include <cstdarg>
 
 typedef unsigned int uint;

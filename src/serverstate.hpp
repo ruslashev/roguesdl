@@ -1,6 +1,8 @@
 #ifndef SERVERSTATE_HPP
 #define SERVERSTATE_HPP
-#include "SDL2/SDL_net.h"
+
+#include <SDL2/SDL_net.h>
+
 #include "gamestatemanager.hpp"
 #include "terminal.hpp"
 #include "utils.hpp"

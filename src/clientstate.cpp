@@ -8,7 +8,7 @@ void ClientState::Enter()
 		fatal(1, "Failed to Initialize SDL_net: %s\n", SDLNet_GetError());
 
 	if (SDLNet_ResolveHost(&IP, "127.0.0.1", 1835) < 0)
-		fatal(2, "Couldn't become a server (Listen on port): %s\n", SDLNet_GetError());
+		fatal(2, "Couldn't become a client (Listen on port): %s\n", SDLNet_GetError());
 
 	if (!(sockDesc = SDLNet_TCP_Open(&IP)))
 		fatal(2, "Failed to open TCP connetion: %s\n", SDLNet_GetError());

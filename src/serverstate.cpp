@@ -51,13 +51,13 @@ void ServerState::Step(GameStateManager *gsm)
 		// Get the remote address
 		remoteIP = SDLNet_TCP_GetPeerAddress(clSockDesc);
 		if (!remoteIP)
-			fatal(3, "Failed to get connected host's address: %s\n", \
+			fatal(3, "Failed to get connected host's address: %s\n",
 					SDLNet_GetError());
 		printf("Host connected: ");
 		clAddr = SDLNet_Read32(&remoteIP->host);
-		printf("%d.%d.%d.%d:%d\n", \
-				(clAddr >> 24) & 0xFF, (clAddr >> 16) & 0xFF, \
-				(clAddr >> 8 ) & 0xFF, (clAddr >> 0 ) & 0xFF, \
+		printf("%d.%d.%d.%d:%d\n",
+				(clAddr >> 24) & 0xFF, (clAddr >> 16) & 0xFF,
+				(clAddr >> 8 ) & 0xFF, (clAddr >> 0 ) & 0xFF,
 				SDLNet_Read16(&remoteIP->port));
 
 		while (1)

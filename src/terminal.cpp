@@ -3,7 +3,7 @@
 
 // static SDL_Keysym dummyKey { SDL_SCANCODE_UNKNOWN, 0, 0, 0 };
 
-Terminal::Terminal(const char* title, int cols, int rws, \
+Terminal::Terminal(const char* title, int cols, int rws,
 		const char* fontPath, int fontSize) : rows(rws), columns(cols)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -18,13 +18,13 @@ Terminal::Terminal(const char* title, int cols, int rws, \
 
 	int fontWidth;
 	TTF_GlyphMetrics(font, '1', NULL, NULL, NULL, NULL, &fontWidth);
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, \
-		SDL_WINDOWPOS_CENTERED, columns*fontWidth, rows*TTF_FontHeight(font), \
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED, columns*fontWidth, rows*TTF_FontHeight(font),
 		SDL_WINDOW_SHOWN);
 	if (!window)
 		fatal(2, "Failed to open a window: %s\n", SDL_GetError());
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | \
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED |
 			SDL_RENDERER_PRESENTVSYNC);
 	if (renderer == NULL)
 		fatal(2, "Failed to initialize a renderer: %s\n", SDL_GetError());
@@ -52,7 +52,7 @@ void Terminal::RebuildSurface()
 		for (std::string &str : screen[y])
 			rowStr += str;
 
-		fontSurf = TTF_RenderUTF8_Shaded(font, rowStr.c_str(), \
+		fontSurf = TTF_RenderUTF8_Shaded(font, rowStr.c_str(),
 				{255, 255, 255, 255}, {20, 20, 20, 255});
 		SDL_Rect offsetRect = { 0, fontSurf->h*y, fontSurf->w, fontSurf->h };
 		screenTexture = SDL_CreateTextureFromSurface(renderer, fontSurf);

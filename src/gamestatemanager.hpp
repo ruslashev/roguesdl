@@ -3,6 +3,7 @@
 
 #include "utils.hpp"
 #include "terminal.hpp"
+
 #include <vector>
 
 class GameState;

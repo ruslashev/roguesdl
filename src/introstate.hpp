@@ -1,5 +1,6 @@
 #ifndef INTROSTATE_HPP
 #define INTROSTATE_HPP
+
 #include "entity.hpp"
 #include "gamestatemanager.hpp"
 #include "playstate.hpp"
